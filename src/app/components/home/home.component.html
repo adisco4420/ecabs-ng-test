@@ -24,6 +24,7 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
+                            <th></th>
                             <th>Name</th>
                             <th>Price</th>
                             <th>Trade Starts</th>
@@ -33,6 +34,14 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let asset of assets | paginate: pagination">
+                            <td>
+                                <span *ngIf="!isFavouriteAsset(asset)" (click)="saveFavouriteAsset(asset)" style="cursor: pointer;">
+                                    <i class="bi bi-star"></i>
+                                </span>
+                                <span *ngIf="isFavouriteAsset(asset)" (click)="deleteFavouriteAsset(asset)"  style="cursor: pointer;">
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                </span>
+                            </td>
                             <td>
                                 <div>
                                     <span class="me-2 text-secondary"><b>{{asset.name}}</b></span>
