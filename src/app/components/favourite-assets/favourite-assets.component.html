@@ -1,0 +1,54 @@
+<div class="container mb-5">
+    <h4>Crypto Price Tracker</h4>
+    <div class="text-center mt-5" *ngIf="!assets">
+        <div class="spinner-grow text-primary" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+      </div>
+    <ng-container *ngIf="assets">
+        <h5 class="text-primary">Favourite Assets</h5>
+        <div class="row" >
+            <div class="col-12 text-center" *ngIf="!assets.length">
+                <i class="bi bi-cassette-fill text-primary" style="font-size: 5rem;"></i>
+                <h6>No Favourite Asset</h6>
+            </div>
+            <div class="col-lg-12" *ngIf="assets.length">
+                <div class="table-responsive" >
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Trade Starts</th>
+                                <th>Trade Ends</th>
+                                <th>1h Volume</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let asset of assets">
+                                <td>
+                                    <span (click)="deleteFavouriteAsset(asset)"  style="cursor: pointer;">
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                    </span>
+                                </td>
+                                <td>
+                                    <div>
+                                        <span class="me-2 text-secondary"><b>{{asset.name}}</b></span>
+                                        <span>{{asset.asset_id}}</span>
+                                    </div>
+                                </td>
+                                <td>{{(asset?.price_usd || 1) | currency}}</td>
+                                <td>{{asset.data_trade_start | date}}</td>
+                                <td>{{asset.data_trade_end | date}}</td>
+                                <td>{{asset.volume_1hrs_usd | currency}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>

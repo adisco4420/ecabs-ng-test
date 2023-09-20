@@ -23,9 +23,9 @@ export class AssetService {
       this.initializeSocket();
     }
 
-  fetchAssets(): Observable<IAsset[]> {
+  fetchAssets(params?: any): Observable<IAsset[]> {
     const headers = {'X-CoinAPI-Key': this.api_key}
-    return this.http.get<IAsset[]>(`${this.base_url}/assets`, {headers}).pipe(map(assets => {
+    return this.http.get<IAsset[]>(`${this.base_url}/assets`, {headers, params}).pipe(map(assets => {
       return assets.filter(asset => asset.type_is_crypto)
     }))
   }

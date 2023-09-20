@@ -12,6 +12,7 @@ import { favouriteAssetReducer, favouriteAssetsPriceReducer } from './store/asse
 import { EffectsModule } from '@ngrx/effects';
 import { AssetEffects } from './effects/asset.effects';
 import { FavouriteAssetsCardComponent } from './components/favourite-assets-card/favourite-assets-card.component';
+import { FavouriteAssetsComponent } from './components/favourite-assets/favourite-assets.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { FavouriteAssetsCardComponent } from './components/favourite-assets-card
     HomeComponent,
     HeaderComponent,
     FavouriteAssetsCardComponent,
+    FavouriteAssetsComponent,
   ],
   imports: [
     BrowserModule,
