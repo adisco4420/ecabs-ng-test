@@ -1,0 +1,42 @@
+<div class="container mb-5">
+    <div class="row">
+        <div class="col-md-9 ms-sm-auto col-lg-12 px-md-4">
+            <h4>Crypto Price Tracker</h4>
+            <div class="text-center mt-5" *ngIf="!assets">
+                <div class="spinner-grow text-primary" role="status" style="width: 3rem; height: 3rem;">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+              </div>
+            <div class="table-responsive" *ngIf="assets">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Trade Starts</th>
+                            <th>Trade Ends</th>
+                            <th>1h Volume</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let asset of assets">
+                            <td>
+                                <div>
+                                    <span class="me-2 text-secondary"><b>{{asset.name}}</b></span>
+                                    <span>{{asset.asset_id}}</span>
+                                </div>
+                            </td>
+                            <td>{{(asset?.price_usd || 1) | currency}}</td>
+                            <td>{{asset.data_trade_start | date}}</td>
+                            <td>{{asset.data_trade_end | date}}</td>
+                            <td>{{asset.volume_1hrs_usd | currency}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+
+            </div>
+        </div>
+    </div>
+</div>
