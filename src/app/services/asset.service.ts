@@ -3,6 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable, map } from 'rxjs';
 import { IAsset } from '../interfaces/asset.interface';
+import { Store } from '@ngrx/store';
+import { IStore } from '../store/store.interface';
+import { AssetActions } from '../store/asset.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +16,10 @@ export class AssetService {
   private localStorageKey = 'Favourite-Assets'
 
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private store: Store<IStore>
+    ) { }
 
   fetchAssets(): Observable<IAsset[]> {
     const headers = {'X-CoinAPI-Key': this.api_key}
@@ -25,11 +31,14 @@ export class AssetService {
     const assets = this.fetchFavouriteAssets();
     const result = JSON.stringify([...assets, asset.asset_id]);
     localStorage.setItem(this.localStorageKey, result);
+    this.store.dispatch(AssetActions.saveFavourite({asset}))
+
   }
   deleteFavouriteAsset(asset: IAsset) {
     const assetIds = this.fetchFavouriteAssets();
     const result = assetIds.filter(assetId => assetId !== asset.asset_id);
     localStorage.setItem(this.localStorageKey, JSON.stringify(result));
+    this.store.dispatch(AssetActions.deleteFavourite({asset}))
   }
   fetchFavouriteAssets(): string[]  {
     const assetIds = localStorage.getItem(this.localStorageKey);

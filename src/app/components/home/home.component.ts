@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { IAsset } from 'src/app/interfaces/asset.interface';
 import { AssetService } from 'src/app/services/asset.service';
+import { IStore } from 'src/app/store/store.interface';
+
 
 @Component({
   selector: 'app-home',
@@ -14,7 +17,9 @@ export class HomeComponent implements OnInit {
   searchTerm = '';
   favouriteAssets: string[] = [];
 
-  constructor(private assetSrv: AssetService) { }
+  constructor(
+    private assetSrv: AssetService,
+    private store: Store<IStore>) {}
 
   ngOnInit(): void {
     this.fetchAssets();
@@ -30,7 +35,9 @@ export class HomeComponent implements OnInit {
     return this.favouriteAssets.indexOf(asset.asset_id) >= 0;
   }
   fetchFavouriteAssets() {
-    this.favouriteAssets = this.assetSrv.fetchFavouriteAssets();
+    this.store.select('favouriteAssets').subscribe(favouriteAssets => {
+      this.favouriteAssets = favouriteAssets;
+    })
   }
   searchAsset() {
     this.pagination.currentPage = 1;
@@ -39,11 +46,9 @@ export class HomeComponent implements OnInit {
   }
   saveFavouriteAsset(asset: IAsset) {
     this.assetSrv.saveFavouriteAsset(asset);
-    this.fetchFavouriteAssets();
   }
   deleteFavouriteAsset(asset: IAsset) {
     this.assetSrv.deleteFavouriteAsset(asset)
-    this.fetchFavouriteAssets();
   }
   pageChange(event: number) {
     this.pagination.currentPage = event;

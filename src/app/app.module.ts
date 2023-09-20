@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './components/core/header/header.component';
 import { FormsModule } from '@angular/forms';
+import { StoreModule } from '@ngrx/store';
+import { favouriteAssetReducer } from './store/asset.reducers';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,10 @@ import { FormsModule } from '@angular/forms';
     AppRoutingModule,
     HttpClientModule,
     NgxPaginationModule,
-    FormsModule
+    FormsModule,
+    StoreModule.forRoot({
+      favouriteAssets: favouriteAssetReducer
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
