@@ -1,3 +1,4 @@
 export interface IStore {
-    favouriteAssets: string[]
+    favouriteAssets: string[],
+    favouriteAssetsPrice: any[]
 }

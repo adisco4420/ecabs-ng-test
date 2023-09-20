@@ -14,12 +14,14 @@ export class AssetService {
   private base_url = environment.COIN_API_BASE_URL;
   private api_key = environment.COIN_API_KEY;
   private localStorageKey = 'Favourite-Assets'
-
+  socket = new WebSocket('ws://ws.coinapi.io/v1/');
 
   constructor(
     private http: HttpClient,
     private store: Store<IStore>
-    ) { }
+    ) { 
+      this.initializeSocket();
+    }
 
   fetchAssets(): Observable<IAsset[]> {
     const headers = {'X-CoinAPI-Key': this.api_key}
@@ -48,4 +50,35 @@ export class AssetService {
     }
     return result
   }
+  initializeSocket() {    
+    this.store.select('favouriteAssets').subscribe(assets => {
+      if(assets.length) {
+        const asset_ids = assets.map(asset => `${asset}/USD`)
+        this.socket.onopen =  (event) => {
+          this.socket.send(JSON.stringify({
+            type: "hello",
+            apikey: this.api_key,
+            subscribe_filter_asset_id: asset_ids,
+            subscribe_data_type: ["trade"],
+            subscribe_filter_symbol_id: ["COINBASE_"]
+          }));
+        };
+      }
+    })
+  }
+  getSocketMessage() {
+    return new Observable((subcriber) => {
+      this.socket.onmessage = (event) => {              
+        const data = JSON.parse(event.data);
+        subcriber.next(data);
+        this.socket.onerror = (error) => {
+          console.log(`WebSocket error: ${error}`);
+        };
+      }
+    })
+
+
+  }
+
+
 }

@@ -1,65 +1,69 @@
 <div class="container mb-5">
-    <div class="row mb-3">
-        <div class="col-md-8">
-            <h4>Crypto Price Tracker</h4>
-        </div>
-        <div class="col-md-4">
-            <div>
-                <input 
-                    type="search" class="form-control" name="search"  
-                    placeholder="Search coin name" [(ngModel)]="searchTerm"
-                    (input)="searchAsset()"
-                >
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="text-center mt-5" *ngIf="!assets">
-                <div class="spinner-grow text-primary" role="status" style="width: 3rem; height: 3rem;">
-                    <span class="visually-hidden">Loading...</span>
-                  </div>
-              </div>
-            <div class="table-responsive" *ngIf="assets">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Trade Starts</th>
-                            <th>Trade Ends</th>
-                            <th>1h Volume</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let asset of assets | paginate: pagination">
-                            <td>
-                                <span *ngIf="!isFavouriteAsset(asset)" (click)="saveFavouriteAsset(asset)" style="cursor: pointer;">
-                                    <i class="bi bi-star"></i>
-                                </span>
-                                <span *ngIf="isFavouriteAsset(asset)" (click)="deleteFavouriteAsset(asset)"  style="cursor: pointer;">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                </span>
-                            </td>
-                            <td>
-                                <div>
-                                    <span class="me-2 text-secondary"><b>{{asset.name}}</b></span>
-                                    <span>{{asset.asset_id}}</span>
-                                </div>
-                            </td>
-                            <td>{{(asset?.price_usd || 1) | currency}}</td>
-                            <td>{{asset.data_trade_start | date}}</td>
-                            <td>{{asset.data_trade_end | date}}</td>
-                            <td>{{asset.volume_1hrs_usd | currency}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <pagination-controls (pageChange)="pageChange($event)"></pagination-controls>
-            </div>
-            <div>
+    <h4>Crypto Price Tracker</h4>
+    <div class="text-center mt-5" *ngIf="!assets">
+        <div class="spinner-grow text-primary" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+      </div>
 
+    <ng-container *ngIf="assets">
+        <app-favourite-assets-card *ngIf="favouriteAssets && favouriteAssets.length"
+            [favouriteAssets]="favouriteAssets"
+            [assets]="unFilteredAssets"
+        ></app-favourite-assets-card>
+        <div class="row mb-2">
+            <div class="col-md-4 offset-md-8" >
+                <div>
+                    <input 
+                        type="search" class="form-control" name="search"  
+                        placeholder="Search coin name" [(ngModel)]="searchTerm"
+                        (input)="searchAsset()"
+                    >
+                </div>
             </div>
         </div>
-    </div>
+        <div class="row" >
+            <div class="col-lg-12">
+                <div class="table-responsive" >
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Trade Starts</th>
+                                <th>Trade Ends</th>
+                                <th>1h Volume</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let asset of assets | paginate: pagination">
+                                <td>
+                                    <span *ngIf="!isFavouriteAsset(asset)" (click)="saveFavouriteAsset(asset)" style="cursor: pointer;">
+                                        <i class="bi bi-star"></i>
+                                    </span>
+                                    <span *ngIf="isFavouriteAsset(asset)" (click)="deleteFavouriteAsset(asset)"  style="cursor: pointer;">
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                    </span>
+                                </td>
+                                <td>
+                                    <div>
+                                        <span class="me-2 text-secondary"><b>{{asset.name}}</b></span>
+                                        <span>{{asset.asset_id}}</span>
+                                    </div>
+                                </td>
+                                <td>{{(asset?.price_usd || 1) | currency}}</td>
+                                <td>{{asset.data_trade_start | date}}</td>
+                                <td>{{asset.data_trade_end | date}}</td>
+                                <td>{{asset.volume_1hrs_usd | currency}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <pagination-controls (pageChange)="pageChange($event)"></pagination-controls>
+                </div>
+                <div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
 </div>

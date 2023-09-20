@@ -17,3 +17,15 @@ export interface IAsset {
     volume_1mth_usd: number;
     price_usd?: number;
 }
+
+export interface IAssetTradeData {
+    time_exchange: Date;
+    time_coinapi: Date;
+    uuid: Date;
+    price: number;
+    size: number;
+    taker_side: "BUY" | "SELL";
+    symbol_id: string;
+    sequence: number;
+    type: string;
+}

@@ -8,13 +8,17 @@ import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './components/core/header/header.component';
 import { FormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
-import { favouriteAssetReducer } from './store/asset.reducers';
+import { favouriteAssetReducer, favouriteAssetsPriceReducer } from './store/asset.reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { AssetEffects } from './effects/asset.effects';
+import { FavouriteAssetsCardComponent } from './components/favourite-assets-card/favourite-assets-card.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     HeaderComponent,
+    FavouriteAssetsCardComponent,
   ],
   imports: [
     BrowserModule,
@@ -23,8 +27,10 @@ import { favouriteAssetReducer } from './store/asset.reducers';
     NgxPaginationModule,
     FormsModule,
     StoreModule.forRoot({
-      favouriteAssets: favouriteAssetReducer
-    })
+      favouriteAssets: favouriteAssetReducer,
+      favouriteAssetsPrice: favouriteAssetsPriceReducer
+    }),
+    EffectsModule.forRoot([AssetEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]

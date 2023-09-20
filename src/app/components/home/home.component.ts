@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { IAsset } from 'src/app/interfaces/asset.interface';
 import { AssetService } from 'src/app/services/asset.service';
+import { AssetActions } from 'src/app/store/asset.actions';
 import { IStore } from 'src/app/store/store.interface';
 
 
@@ -20,6 +21,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private assetSrv: AssetService,
     private store: Store<IStore>) {}
+
 
   ngOnInit(): void {
     this.fetchAssets();
@@ -46,6 +48,7 @@ export class HomeComponent implements OnInit {
   }
   saveFavouriteAsset(asset: IAsset) {
     this.assetSrv.saveFavouriteAsset(asset);
+    this.store.dispatch({ type: AssetActions.onLoadFavouriteAssetsPrice });
   }
   deleteFavouriteAsset(asset: IAsset) {
     this.assetSrv.deleteFavouriteAsset(asset)
