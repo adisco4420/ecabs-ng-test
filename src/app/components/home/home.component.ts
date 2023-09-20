@@ -9,8 +9,10 @@ import { AssetService } from 'src/app/services/asset.service';
 })
 export class HomeComponent implements OnInit {
   assets: IAsset[] | undefined;
-  iconUrl = 'https://s3.eu-central-1.amazonaws.com/bbxt-static-icons/type-id/png_16';
-  priceCurrency = '$'
+  pagination = { itemsPerPage: 20, currentPage: 1 };
+  unFilteredAssets: IAsset[] | undefined;
+  searchTerm = ''
+
   constructor(private assetSrv: AssetService) { }
 
   ngOnInit(): void {
@@ -19,8 +21,16 @@ export class HomeComponent implements OnInit {
 
   fetchAssets() {
     this.assetSrv.fetchCryptoAssets().subscribe(assets => {
-      this.assets = assets;      
+      this.unFilteredAssets = this.assets = assets;
     })
+  }
+  searchAsset() {
+    this.pagination.currentPage = 1;
+    const searchTerm = this.searchTerm.toLowerCase();
+    this.assets = this.unFilteredAssets?.filter(asset => asset.name.toLowerCase().includes(searchTerm))    
+  }
+  pageChange(event: number) {
+    this.pagination.currentPage = event;
   }
 
 }

@@ -1,7 +1,20 @@
 <div class="container mb-5">
-    <div class="row">
-        <div class="col-md-9 ms-sm-auto col-lg-12 px-md-4">
+    <div class="row mb-3">
+        <div class="col-md-8">
             <h4>Crypto Price Tracker</h4>
+        </div>
+        <div class="col-md-4">
+            <div>
+                <input 
+                    type="search" class="form-control" name="search"  
+                    placeholder="Search coin name" [(ngModel)]="searchTerm"
+                    (input)="searchAsset()"
+                >
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
             <div class="text-center mt-5" *ngIf="!assets">
                 <div class="spinner-grow text-primary" role="status" style="width: 3rem; height: 3rem;">
                     <span class="visually-hidden">Loading...</span>
@@ -19,7 +32,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let asset of assets">
+                        <tr *ngFor="let asset of assets | paginate: pagination">
                             <td>
                                 <div>
                                     <span class="me-2 text-secondary"><b>{{asset.name}}</b></span>
@@ -33,6 +46,7 @@
                         </tr>
                     </tbody>
                 </table>
+                <pagination-controls (pageChange)="pageChange($event)"></pagination-controls>
             </div>
             <div>
 
