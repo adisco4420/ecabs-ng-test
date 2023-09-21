@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { provideMockStore } from '@ngrx/store/testing';
 import { FavouriteAssetsCardComponent } from './favourite-assets-card.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('FavouriteAssetsCardComponent', () => {
   let component: FavouriteAssetsCardComponent;
@@ -8,7 +9,11 @@ describe('FavouriteAssetsCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FavouriteAssetsCardComponent ]
+      declarations: [ FavouriteAssetsCardComponent ],
+      providers: [
+        provideMockStore({}),
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
     })
     .compileComponents();
 

@@ -52,7 +52,7 @@ export class AssetService {
   }
   initializeSocket() {    
     this.store.select('favouriteAssets').subscribe(assets => {
-      if(assets.length) {
+      if(assets && assets.length) {
         const asset_ids = assets.map(asset => `${asset}/USD`)
         this.socket.onopen =  (event) => {
           this.socket.send(JSON.stringify({
